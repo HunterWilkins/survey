@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-const db = mysql.createConnection(config.dev);
+const db = mysql.createConnection(process.env.NODE_ENV === "production" ? config.production : config.dev);
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
