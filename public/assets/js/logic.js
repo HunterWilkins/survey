@@ -1,12 +1,22 @@
-let options = [
-    "Answer 1",
-    "Answer 2",
-    "Answer 3"
-];
+$.getJSON("/api/poll/1", function(data){
+    console.log(data);
+    const options = data.Options;
+    const pollInfo = {
+        title: data.title,
+        date: data.createdAt
+    };
 
-options.forEach((item, i) => {
-    $("#poll").append(
-        `<input type="radio" name="poll" id="poll-${i}" value = "${item}">
-        <label for="poll-${i}">${item}</label>`
-    );
+    $("#title").text(pollInfo.title);
+    options.forEach((item, i)=> {
+        $("#poll").append(
+            `
+            <input id = "poll-item-${i}" name = "option" type = "radio" value = "${item.text}">
+            <label for = "poll-item-${i}">${item.text}</label>
+            `
+        )
+    })
 });
+
+function submitOption(choice) {
+    $.post("/api/option/1", {vote: choice});
+}
